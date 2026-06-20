@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Asset Extractor</title>
+    <style>
+        /* Mod Menu Style Configuration */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #0f1115;
+            color: #00ffcc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .mod-menu {
+            background-color: #1a1d24;
+            border: 2px solid #00ffcc;
+            border-radius: 6px;
+            padding: 25px;
+            width: 360px;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+            text-shadow: 0 0 5px rgba(0, 255, 204, 0.2);
+        }
+        h2 {
+            margin-top: 0;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.4rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            color: #a0a5b5;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #101216;
+            border: 1px solid #00ffcc;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+        .radio-group {
+            background: #101216;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+        .radio-option input {
+            margin-right: 10px;
+            accent-color: #00ffcc;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #00ffcc;
+            color: #101216;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        button:hover {
+            background-color: #fff;
+            box-shadow: 0 0 10px #fff;
+        }
+        .status {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mod-menu">
+    <h2>Asset Extractor</h2>
+    
+    <div class="input-group">
+        <label>TARGET PLACE ID</label>
+        <input type="text" id="targetId" placeholder="Enter Game ID...">
+    </div>
+
+    <label>EXTRACTION MODE</label>
+    <div class="radio-group">
+        <label class="radio-option">
+            <input type="radio" name="mode" value="full" checked>
+            <span>Map + Scripts (Full Project)</span>
+        </label>
+        <label class="radio-option">
+            <input type="radio" name="mode" value="mapOnly">
+            <span>Map Only (Strip All Scripts)</span>
+        </label>
+    </div>
+
+    <button onclick="requestDownload()">Generate & Download</button>
+    <div class="status" id="statusMsg">Ready</div>
+</div>
+
+<script>
+async function requestDownload() {
+    const placeId = document.getElementById('targetId').value.trim();
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    const statusMsg = document.getElementById('statusMsg');
+
+    if (!placeId || isNaN(placeId)) {
+        alert('Please enter a valid numeric Place ID.');
+        return;
+    }
+
+    statusMsg.innerText = "Processing file on server...";
+    statusMsg.style.color = "#00ffcc";
+
+    // Directing request to your backend server endpoint
+    window.location.href = `/api/download?placeId=${placeId}&mode=${mode}`;
+    
+    setTimeout(() => {
+        statusMsg.innerText = "Download initialized.";
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
